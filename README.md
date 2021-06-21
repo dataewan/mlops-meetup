@@ -20,3 +20,8 @@ and how including more on the data work can get you out of trouble.
 
 - This is not a tutorial in how to create a recommender system. The patterns, technologies, and data transformations aren't meant to be gold standard. This doesn't look like any particular recommender I've seen before.
 - I'm not trying to say focussing on data work is more important than other things you need to consider.
+
+
+## Dataset
+
+Dataset is amazon reviews dataset for Musical Instruments.
