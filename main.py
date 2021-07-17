@@ -18,5 +18,10 @@ def date_increment():
     flows.get_next_day()
 
 
+@cli.command()
+def training():
+    flows.training_flow()
+
+
 if __name__ == "__main__":
     cli()

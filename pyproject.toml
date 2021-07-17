@@ -12,12 +12,14 @@ prefect = "^0.14.22"
 dask = "^2021.6.1"
 pandas = "^1.2.4"
 pyarrow = "^4.0.1"
+tensorflow = "^2.5.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 black = "^21.6b0"
 ipdb = "^0.13.9"
 jupyter-client = "6.1.0"
+pytest-mock = "^3.6.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
