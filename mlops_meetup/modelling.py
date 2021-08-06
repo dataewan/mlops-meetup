@@ -6,18 +6,20 @@ from tensorflow.keras import layers
 from typing import Dict, Tuple
 from mlops_meetup import config
 
-EMBEDDING_SIZE = 16
-
 
 def create_model(max_item_id: int, max_user_id: int):
     user_input = layers.Input(shape=(1,), name="user")
     item_input = layers.Input(shape=(1,), name="item")
 
     user_embedding = layers.Embedding(
-        name="user_embedding", input_dim=max_user_id + 1, output_dim=EMBEDDING_SIZE
+        name="user_embedding",
+        input_dim=max_user_id + 1,
+        output_dim=config.EMBEDDING_SIZE,
     )(user_input)
     item_embedding = layers.Embedding(
-        name="item_embedding", input_dim=max_item_id + 1, output_dim=EMBEDDING_SIZE
+        name="item_embedding",
+        input_dim=max_item_id + 1,
+        output_dim=config.EMBEDDING_SIZE,
     )(item_input)
 
     dot = layers.Dot(
@@ -107,3 +109,8 @@ def train_model(
 @prefect.task
 def save_model(model, model_path: str):
     keras.models.save_model(model, model_path)
+
+
+@prefect.task
+def load_model(model_path: str):
+    return keras.models.load_model(model_path)

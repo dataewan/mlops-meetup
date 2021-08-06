@@ -2,7 +2,7 @@ import datetime
 import prefect
 from mlops_meetup import config
 import duckdb
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, List
 
 
 def _read_sql(path: str) -> str:
@@ -65,3 +65,22 @@ def get_max_ids(con: duckdb.DuckDBPyConnection) -> Tuple[int, int]:
     user_id = con.execute(hydrate_sql("scripts/get_max_user_id.sql")).fetchone()
 
     return item_id[0], user_id[0]
+
+
+def lookup_to_dict(lookup_data: List[Tuple[int, str]]) -> Dict[int, str]:
+    return {item[0]: item[1] for item in lookup_data}
+
+
+@prefect.task
+def get_reverse_item_lookup(con: duckdb.DuckDBPyConnection) -> Dict[int, str]:
+    reverse_user_lookup = con.execute(
+        hydrate_sql("scripts/get_reverse_item_lookup.sql")
+    ).fetchall()
+
+    return lookup_to_dict(reverse_user_lookup)
+
+
+@prefect.task
+def get_user_metadata(con: duckdb.DuckDBPyConnection):
+    user_metadata = con.execute(hydrate_sql("scripts/user_metadata.sql")).fetchall()
+    return user_metadata

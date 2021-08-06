@@ -29,3 +29,15 @@ def test_hydrate_sql_without_params(mocker):
     )
 
     assert datawarehouse.hydrate_sql("any path") == "{a} putting parameters {b}"
+
+
+def test_lookup_to_dict():
+    test_data = [
+        (1, "a"),
+        (2, "b"),
+    ]
+
+    assert datawarehouse.lookup_to_dict(test_data) == {
+        1: "a",
+        2: "b",
+    }

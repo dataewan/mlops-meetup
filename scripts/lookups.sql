@@ -10,7 +10,7 @@ create temporary table unique_users as
 create table user_lookup as
 select 
     reviewerID
-,   row_number() over (order by random()) as user_id
+,   row_number() over (order by random()) -1 as user_id
 
 from unique_users;
 
@@ -24,6 +24,6 @@ create temporary table unique_items as
 create table item_lookup as
 select 
     asin
-,   row_number() over (order by random()) as item_id
+,   row_number() over (order by random()) -1 as item_id
 
 from unique_items;

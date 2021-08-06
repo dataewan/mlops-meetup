@@ -4,3 +4,6 @@ META_PARQUET_PATH = "data/meta/"
 DB_PATH = "data/database.db"
 MODEL_PATH = "data/model"
 LOGGING_PATH = "data/logs/"
+ITEM_INDEX_PATH = "data/item_index.ann"
+USER_INDEX_PATH = "data/user_index.pkl"
+EMBEDDING_SIZE = 16

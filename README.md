@@ -1,3 +1,25 @@
+# Instructions
+
+## Setting up
+
+```zsh
+# convert the data to the right formats
+python main.py initiate
+
+python main.py training
+
+python main.py make_indexes
+```
+
+
+## Serving
+
+```
+uvicorn main:app
+```
+
+----
+
 Workshop for the mlops meetup.
 
 There are a lot of things you have to consider when developing a machine learning system, including:

@@ -1,5 +1,11 @@
 from prefect import Flow
-from mlops_meetup import parquet_ingest, config, datawarehouse, modelling
+from mlops_meetup import (
+    parquet_ingest,
+    config,
+    datawarehouse,
+    modelling,
+    indexes,
+)
 
 
 def convert_to_parquet():
@@ -48,5 +54,24 @@ def training_flow():
         model = modelling.train_model(training_data, max_item_id, max_user_id)
 
         modelling.save_model(model, config.MODEL_PATH)
+
+    flow.run()
+
+
+def make_indexes():
+    with Flow("Create nearest neighbours index") as flow:
+        con = datawarehouse.connect_dw()
+        reverse_item_lookup = datawarehouse.get_reverse_item_lookup(con)
+        item_lookup = indexes.flip_reverse_lookup(reverse_item_lookup)
+        user_metadata = datawarehouse.get_user_metadata(con)
+        model = modelling.load_model(config.MODEL_PATH)
+        item_embeddings = indexes.extract_item_embeddings(model)
+        item_index = indexes.make_nn_index(item_embeddings, reverse_item_lookup)
+        user_index = indexes.make_user_index(
+            user_metadata, item_lookup, item_embeddings
+        )
+
+        indexes.persist_nn_index(item_index, config.ITEM_INDEX_PATH)
+        indexes.persist_user_index(user_index, config.USER_INDEX_PATH)
 
     flow.run()
