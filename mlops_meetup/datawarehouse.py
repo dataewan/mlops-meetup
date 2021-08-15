@@ -24,6 +24,11 @@ def connect_dw():
 
 
 @prefect.task
+def close_connection(con):
+    con.close()
+
+
+@prefect.task
 def get_most_recent_day(con: duckdb.DuckDBPyConnection) -> datetime.date:
     logger = prefect.context.get("logger")
     rel = con.execute(hydrate_sql("scripts/most_recent_day.sql"))
@@ -34,7 +39,10 @@ def get_most_recent_day(con: duckdb.DuckDBPyConnection) -> datetime.date:
 
 @prefect.task
 def increment_date(d: datetime.date) -> datetime.date:
-    return d + datetime.timedelta(days=1)
+    logger = prefect.context.get("logger")
+    next_day = d + datetime.timedelta(days=1)
+    logger.info(f"Next day to get is {next_day}")
+    return next_day
 
 
 @prefect.task
