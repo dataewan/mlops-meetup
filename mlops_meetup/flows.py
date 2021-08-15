@@ -5,6 +5,7 @@ from mlops_meetup import (
     datawarehouse,
     modelling,
     indexes,
+    data_validation,
 )
 
 
@@ -36,6 +37,13 @@ def get_next_day():
         most_recent_day = datawarehouse.get_most_recent_day(con)
         next_day = datawarehouse.increment_date(most_recent_day)
         parquet_ingest.daily_extract(next_day)
+        closed = datawarehouse.close_connection(
+            con, upstream_tasks=[next_day, most_recent_day]
+        )
+        notebook_path = data_validation.execute_notebook(
+            most_recent_day, upstream_tasks=[closed]
+        )
+        data_validation.convert_notebook(notebook_path)
 
     flow.run()
 

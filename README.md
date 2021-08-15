@@ -8,7 +8,7 @@ python main.py initiate
 
 python main.py training
 
-python main.py make_indexes
+python main.py make-indexes
 ```
 
 
@@ -18,8 +18,23 @@ python main.py make_indexes
 uvicorn main:app
 ```
 
-----
+## Adding a new day
 
+```zsh
+python main.py date-increment
+```
+
+at this stage, take a look at the pdf export to see if it looks right.
+Then:
+
+
+```zsh
+python main.py training
+python main.py make-indexes
+```
+
+
+----
 
 
 ## Dataset
