@@ -18,7 +18,7 @@ def startup_event():
 
 @app.get("/user/")
 def read_user(user_id: str):
-    return api.get_user(
+    return api.get_user_recs(
         user_id,
         api_indexes["nn_index"],
         api_indexes["user_index"],
